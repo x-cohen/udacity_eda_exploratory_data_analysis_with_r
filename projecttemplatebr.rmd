@@ -1,0 +1,582 @@
+Red Wine Quality Exploration
+========================================================
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, packages}
+# Carregue aqui todos os pacotes utilizados 
+# na sua análise realizada neste arquivo fonte.
+
+# Note que o parâmetro "echo" foi definido como FALSE neste código.
+# Isso previne que o código apresente resultados formatados em HTML.
+# Você deve definir echo=FALSE para todos os blocos de código no seu arquivo.
+
+library(ggplot2)
+```
+
+```{r echo=FALSE, Load_the_Data}
+# Carregamento dos dados
+wineQuality <- read.csv('wineQualityReds.csv')
+
+```
+
+
+# Seção de Gráficos Univariados
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+dim(wineQuality)
+
+colnames(wineQuality)
+
+summary(wineQuality)
+
+str(wineQuality)
+
+
+counts <- table(wineQuality$quality)
+barplot(counts, main="Distribuição da Qualidade dos Vinhos", 
+  	xlab="Nível de Qualidade",
+  	ylab = "Quantidade de vinhos (unidades)")
+table(wineQuality$quality)
+
+```
+O data set analisado possui 1.599 vinhos. As notas dos especialistas variaram entre 0 (muito ruim) e 10 (excelente. Não há vinhos com notas 0, 1, 2, 9 e 10. Os extremos da faixa, nível 3 e 8, possuem as menores quantidades no conjunto, totalizando 10 e 18, respecitvamente. A maior quantidade de vinhos no data set são de qualidade 5 e 6, com 681 e 638, respectivamente.
+ 
+```{r echo=FALSE, message=FALSE,warning=FALSE}
+qplot(data = wineQuality, x = fixed.acidity,
+      main = "Histograma de 'fixed.acidity'",
+      xlab = "Nível de 'fixed.acidity'",
+      ylab = "Quantidade de vinhos (unidades)")
+qplot(data = wineQuality, x = fixed.acidity,
+      main = "Histograma de 'fixed.acidity' (log)",
+      xlab = "Nível de 'fixed.acidity' (log)",
+      ylab = "Quantidade de vinhos (unidades)") + scale_x_log10()
+summary(wineQuality$fixed.acidity)
+```
+Variável "fixed.acidity", contínua, com mínimo de 4,60 e máximo de 15,90. Originalmente com leve tendência à direita em sua distribuição. A tranformação logarítimica resultou numa distribuição mais equilibrada.
+ 
+ 
+```{r echo=FALSE, message=FALSE,warning=FALSE}
+qplot(data = wineQuality, x = volatile.acidity,
+      main = "Histograma de 'volatile.acidity'",
+      xlab = "Nível de 'volatile.acidity'",
+      ylab = "Quantidade de vinhos (unidades)")
+qplot(data = wineQuality, x = volatile.acidity,
+      main = "Histograma de 'volatile.acidity' (log)",
+      xlab = "Nível de 'volatile.acidity' (log)",
+      ylab = "Quantidade de vinhos (unidades)") + scale_x_log10()
+summary(wineQuality$volatile.acidity)
+```
+Variável "volatile.acidity", contínua, com mínimo de 0,12 e máximo de 1,58. Como a anterior, possui desvio à direita. A tranformação logarítimica resultou numa distribuição mais equilibrada.
+ 
+ 
+```{r echo=FALSE, message=FALSE,warning=FALSE}
+qplot(data = wineQuality, x = citric.acid, 
+      main = "Histograma de 'citric.acid'",
+      xlab = "Nível de 'citric.acid'",
+      ylab = "Quantidade de vinhos (unidades)")
+qplot(data = wineQuality, x = citric.acid, 
+      main = "Histograma de 'citric.acid' (log)",
+      xlab = "Nível de 'citric.acid' (log)",
+      ylab = "Quantidade de vinhos (unidades)") + scale_x_log10()
+summary(wineQuality$citric.acid)
+```
+Variável "citric.acid", contínua, com mínimo de 0 e máximo de 1. Não apresenta uma distribuição normal. A transformação logarítimica não apresentou resultado satisfatório.
+ 
+ 
+```{r echo=FALSE, message=FALSE,warning=FALSE}
+qplot(data = wineQuality, x = residual.sugar, 
+      main = "Histograma de 'residual.sugar'",
+      xlab = "Nível de 'residual.sugar'",
+      ylab = "Quantidade de vinhos (unidades)")
+qplot(data = wineQuality, x = residual.sugar, 
+      main = "Histograma de 'residual.sugar' (log)",
+      xlab = "Nível de 'residual.sugar' (log)",
+      ylab = "Quantidade de vinhos (unidades)") + scale_x_log10()
+summary(wineQuality$residual.sugar)
+```
+Variável "residual.suggar", contínua, com mínimo de 0,9 e máximo de 15,5. Sua distribuição apresenta forte desvio à direita. A transformação logarítimica reduziu o desvio.
+ 
+
+```{r echo=FALSE, message=FALSE,warning=FALSE}
+qplot(data = wineQuality, x = chlorides, 
+      main = "Histograma de 'chlorides'",
+      xlab = "Nível de 'chlorides'",
+      ylab = "Quantidade de vinhos (unidades)")
+qplot(data = wineQuality, x = chlorides, 
+      main = "Histograma de 'chlorides' (log)",
+      xlab = "Nível de 'chlorides' (log)",
+      ylab = "Quantidade de vinhos (unidades)") + scale_x_log10()
+summary(wineQuality$chlorides)
+```
+Variável "chlorides", contínua, com mínimo de 0,012 e máximo de 0,611. Possui distribuição com forte desvio à direita. A transformação logarítimica tornou a distribuição mais próxima da curva normal.
+ 
+ 
+```{r echo=FALSE, message=FALSE,warning=FALSE}
+qplot(data = wineQuality, x = free.sulfur.dioxide, 
+      main = "Histograma de 'free.sulfur.dioxide'",
+      xlab = "Nível de 'free.sulfur.dioxide'",
+      ylab = "Quantidade de vinhos (unidades)")
+qplot(data = wineQuality, x = free.sulfur.dioxide, 
+      main = "Histograma de 'free.sulfur.dioxide' (log)",
+      xlab = "Nível de 'free.sulfur.dioxide' (log)",
+      ylab = "Quantidade de vinhos (unidades)", binwidth = 0.1) + scale_x_log10()
+summary(wineQuality$free.sulfur.dioxide)
+```
+Variável "free.sulfur.dioxide", contínua, com mínimo de 1 e máximo de 72. Distribuição com forte desvio à direita. A transformação logarítimica diminuiu o desvio.
+ 
+ 
+```{r echo=FALSE, message=FALSE,warning=FALSE}
+qplot(data = wineQuality, x = total.sulfur.dioxide, 
+      main = "Histograma de 'total.sulfur.dioxide'",
+      xlab = "Nível de 'total.sulfur.dioxide'",
+      ylab = "Quantidade de vinhos (unidades)")
+qplot(data = wineQuality, x = total.sulfur.dioxide, 
+      main = "Histograma de 'total.sulfur.dioxide' (log)",
+      xlab = "Nível de 'total.sulfur.dioxide' (log)",
+      ylab = "Quantidade de vinhos (unidades)") + scale_x_log10()
+summary(wineQuality$total.sulfur.dioxide)
+```
+Variável "total.sulfur.dioxide", contínua, com mínimo de 6 e máximo de 289. Apresenta forte desvio à direita. A transformação logarítimica diminuiu o desvio da distribuição.
+ 
+ 
+```{r echo=FALSE, message=FALSE,warning=FALSE}
+qplot(data = wineQuality, x = density, 
+      main = "Histograma de 'density'",
+      xlab = "Nível de 'density'",
+      ylab = "Quantidade de vinhos (unidades)")
+summary(wineQuality$density)
+```
+Variável "density", contínua, com mínimo de 0,9901 e máximo de 1,0037. Apresenta distribuição próxima da curval normal.
+ 
+ 
+```{r echo=FALSE, message=FALSE,warning=FALSE}
+qplot(data = wineQuality, x = pH, 
+      main = "Histograma de 'pH'",
+      xlab = "Nível de 'pH'",
+      ylab = "Quantidade de vinhos (unidades)")
+summary(wineQuality$pH)
+```
+Variável "pH", contínua, com mínimo de 2,74 e máximo de 4,01. Apresenta distribuição próxima da curva normal.
+ 
+ 
+```{r echo=FALSE, message=FALSE,warning=FALSE}
+qplot(data = wineQuality, x = sulphates, 
+      main = "Histograma de 'sulphates'",
+      xlab = "Nível de 'sulphates'",
+      ylab = "Quantidade de vinhos (unidades)")
+qplot(data = wineQuality, x = sulphates, 
+      main = "Histograma de 'sulphates' (log)",
+      xlab = "Nível de 'sulphates' (log)",
+      ylab = "Quantidade de vinhos (unidades)") + scale_x_log10()
+summary(wineQuality$sulphates)
+```
+Variável "sulphates", contínua, com mínimo de 0,33 e máximo de 2. Apresenta distribuição com desvio à direita. A transformação logarítimica diminuiu o desvio.
+ 
+ 
+```{r echo=FALSE, message=FALSE,warning=FALSE}
+qplot(data = wineQuality, x = alcohol, 
+      main = "Histograma de 'alcohol'",
+      xlab = "Nível de 'alcohol'",
+      ylab = "Quantidade de vinhos (unidades)")
+qplot(data = wineQuality, x = alcohol, 
+      main = "Histograma de 'alcohol' (log)",
+      xlab = "Nível de 'alcohol' (log)",
+      ylab = "Quantidade de vinhos (unidades)") + scale_x_log10()
+summary(wineQuality$alcohol)
+```
+Variável "alcohol", contínua, com mínimo de 8,4 e máximo de 14,9. Apresenta algum desvio à direita. A transformação logarítimica não apresentou resultado satisfatório.
+ 
+ 
+# Análise Univariada
+
+### Qual é a estrutura do conjunto de dados?
+O data set possui 1.599 vinhos registrados e 13 variáveis, sendo 12 com características dos vinhos e uma de identificação.
+
+As 12 variáveis descritivas são:
+
+ [2] "fixed.acidity"       
+ [3] "volatile.acidity"    
+ [4] "citric.acid"         
+ [5] "residual.sugar"      
+ [6] "chlorides"           
+ [7] "free.sulfur.dioxide" 
+ [8] "total.sulfur.dioxide"
+ [9] "density"             
+[10] "pH"                  
+[11] "sulphates"           
+[12] "alcohol"             
+[13] "quality"             
+
+A variável "quality" é categórica, com níveis de resposta: 3, 4, 5, 6, 7, 8. As demais variáveis são contínuas.
+
+
+### Quais são os principais atributos de interesse deste conjunto de dados?
+A princípio, os dois principais atibutos são o "pH" do vinho e a sua "quality". Como pressuposto inicial, acredito que o pH é a principal variável para predizer a qualidade do vinho. Contudo, na próxima seção será tratada a identificação de correlação entre todas as variáveis, de modo que possamos identificar (ou não) outras variáveis que possam contribuir para um futuro modelo preditivo.
+
+
+### Quais outros atributos você acha que podem lhe auxiliar na investigação destes atributos de interesse?
+É possível que todas as demais varíaveis possam contribuir para a determinação da qualidade do vinho.
+
+
+### Você criou novas variáveis a partir dos atributos existentes no conjunto de dados?
+Sim. Adotou-se como novas variáveis as transformações logarítimicas que apresentaram sucesso na diminuição dos desvios das distribuições originais. As novas variáveis foram:
+
+[1] fixed.acidity.log
+[2] volatile.acidity.log
+[3] residual.suggar.log
+[4] chlorides.log
+[5] free.sulfur.dioxide.log
+[6] total.sulfur.dioxide.log
+[7] sulphates.log
+
+ 
+```{r echo=FALSE, message=FALSE,warning=FALSE}
+# criação das novas variáveis a partir da transformação logarítimica
+
+wineQuality$fixed.acidity.log <- log(wineQuality$fixed.acidity)
+
+wineQuality$volatile.acidity.log <- log(wineQuality$volatile.acidity)
+
+wineQuality$residual.sugar.log <- log(wineQuality$residual.sugar)
+
+wineQuality$chlorides.log <- log(wineQuality$chlorides)
+
+wineQuality$free.sulfur.dioxide.log <- log(wineQuality$free.sulfur.dioxide)
+
+wineQuality$total.sulfur.dioxide.log <- log(wineQuality$total.sulfur.dioxide)
+
+wineQuality$sulphates.log <- log(wineQuality$sulphates)
+
+
+# deletando colunas desnecessárias
+drop <- c("X", "fixed.acidity","volatile.acidity", "residual.sugar","chlorides","free.sulfur.dioxide", "total.sulfur.dioxide", "sulphates")
+wineQuality = wineQuality[,!(names(wineQuality) %in% drop)]
+```
+
+
+### Dos atributos investigados, distribuições incomuns foram encontradas? Você aplicou operações nos dados para limpá-los, ajustá-los ou mudar a forma dos dados? Se sim, por quê?
+Foram encontradas distribuições com desvios à direita. Para isso, empregou-se a tranformação por logarítimos com o intuito de se obter uma distribuição sem desvio (mais próxima da curva normal) ou com o menor desvio possível.
+
+
+# Seção de Gráficos Bivariados
+```{r echo=FALSE,  message=FALSE, warning=FALSE, Bivariate_Plots}
+
+# Correlações
+res <- cor(wineQuality)
+#round(res, 2)
+
+```
+
+
+```{r Red Wine Correlation, echo=FALSE, fig.height=15, fig.width=15, message=FALSE, warning=FALSE}
+library(corrplot)
+
+corrplot.mixed(res, main = "Correlação de Pearson")
+```
+
+
+```{r echo=FALSE, message=FALSE,warning=FALSE, fig.height=20, fig.width=15}
+library(GGally)
+theme_set(theme_minimal((20)))
+ggpairs(wineQuality, title = "Correlações e relações entre as variáveis")
+
+# tranformar "quality" em factor
+wineQuality$quality <- as.factor(wineQuality$quality)
+
+```
+
+
+```{r echo=FALSE, message=FALSE,warning=FALSE}
+
+qplot(data = wineQuality, x = quality, y = citric.acid,
+      main = "Dispersão 'quality' x 'citric.acid'", 
+      xlab = "Nível de 'quality'", 
+      ylab = "Nível de 'citric.acid'")
+
+       
+qplot(data = wineQuality, x = quality, y = citric.acid, 
+      main = "Boxplot 'quality' x 'citric.acid'", 
+      xlab = "Nível de 'quality'", 
+      ylab = "Nível de 'citric.acid'",
+      geom = 'boxplot')
+
+
+by (wineQuality$citric.acid, wineQuality$quality, summary)
+```
+Vinho de melhor qualidade (nível 7 e 8) possuem valores mais altos para "citric.acid"
+
+
+```{r echo=FALSE, message=FALSE,warning=FALSE}
+qplot(data = wineQuality, x = quality, y = density,
+      main = "Disperção 'quality' x 'density'", 
+      xlab = "Nível de 'quality'", 
+      ylab = "Nível de 'density'")
+
+qplot(data = wineQuality, x = quality, y = density, 
+      main = "Boxplot 'quality' x 'density'", 
+      xlab = "Nível de 'quality'", 
+      ylab = "Nível de 'density'", geom = 'boxplot')
+
+by (wineQuality$density, wineQuality$quality, summary)
+```
+Vinhos de melhor qualidade possuem valores de "desity" menores
+
+```{r echo=FALSE, message=FALSE,warning=FALSE}
+qplot(data = wineQuality, x = quality, y = pH,
+      main = "Disperção 'quality' x 'pH'", 
+      xlab = "Nível de 'quality'", 
+      ylab = "Nível de 'pH'")
+
+qplot(data = wineQuality, x = quality, y = pH, 
+      main = "Boxplot 'quality' x 'pH'", 
+      xlab = "Nível de 'quality'", 
+      ylab = "Nível de 'pH'", geom = 'boxplot')
+
+by (wineQuality$pH, wineQuality$quality, summary)
+```
+Vinhos de melhor qualidade possuem pH com menores valores.
+
+```{r echo=FALSE, message=FALSE,warning=FALSE}
+qplot(data = wineQuality, x = quality, y = alcohol,
+      main = "Disperção 'quality' x 'alcohol'", 
+      xlab = "Nível de 'quality'", 
+      ylab = "Nível de 'alcohol'")
+
+qplot(data = wineQuality, x = quality, y = alcohol, 
+      main = "Boxplot 'quality' x 'alcohol'", 
+      xlab = "Nível de 'quality'", 
+      ylab = "Nível de 'alcohol'", geom = 'boxplot')
+
+by (wineQuality$alcohol, wineQuality$quality, summary)
+```
+Vinhos de melhor qualidade possuem maiores valores de "alcohol"
+
+
+```{r echo=FALSE, message=FALSE,warning=FALSE}
+qplot(data = wineQuality, x = quality, y = fixed.acidity.log,
+      main = "Disperção 'quality' x 'fixed.acidity.log'", 
+      xlab = "Nível de 'quality'", 
+      ylab = "Nível de 'fixed.acidity.log'")
+
+qplot(data = wineQuality, x = quality, y = fixed.acidity.log, 
+      main = "Boxplot 'quality' x 'fixed.acidity.log'", 
+      xlab = "Nível de 'quality'", 
+      ylab = "Nível de 'fixed.acidity.log'", geom = 'boxplot')
+
+by (wineQuality$fixed.acidity.log, wineQuality$quality, summary)
+```
+A variável "fixed.acidity.log" não apresenta diferença substancial entre as categorias de qualidade de vinho.
+
+
+```{r echo=FALSE, message=FALSE,warning=FALSE}
+qplot(data = wineQuality, x = quality, y = volatile.acidity.log,
+      main = "Disperção 'quality' x 'volatile.acidity.log'", 
+      xlab = "Nível de 'quality'", 
+      ylab = "Nível de 'volatile.acidity.log'")
+
+qplot(data = wineQuality, x = quality, y = volatile.acidity.log, 
+      main = "Boxplot 'quality' x 'volatile.acidity.log'", 
+      xlab = "Nível de 'quality'", 
+      ylab = "Nível de 'volatile.acidity.log'", geom = 'boxplot')
+
+by (wineQuality$volatile.acidity.log, wineQuality$quality, summary)
+```
+Os vinhos de melhor qualidade possuem valores menores para "volatile.acidity"
+
+
+```{r echo=FALSE, message=FALSE,warning=FALSE}
+qplot(data = wineQuality, x = quality, y = residual.sugar.log,
+      main = "Disperção 'quality' x 'residual.sugar.log'", 
+      xlab = "Nível de 'quality'", 
+      ylab = "Nível de 'residual.sugar.log'")
+
+qplot(data = wineQuality, x = quality, y = residual.sugar.log, 
+      main = "Boxplot 'quality' x 'residual.sugar.log'", 
+      xlab = "Nível de 'quality'", 
+      ylab = "Nível de 'residual.sugar.log'", geom = 'boxplot')
+
+by (wineQuality$residual.sugar.log, wineQuality$quality, summary)
+```
+A variável "residual.sugar.log" não apresenta diferença substancial entre as categorias de qualidade de vinho.
+
+
+```{r echo=FALSE, message=FALSE,warning=FALSE}
+qplot(data = wineQuality, x = quality, y = chlorides.log,
+      main = "Disperção 'quality' x 'chlorides.log'", 
+      xlab = "Nível de 'quality'", 
+      ylab = "Nível de 'chlorides.log'")
+
+qplot(data = wineQuality, x = quality, y = chlorides.log, 
+      main = "Boxplot 'quality' x 'chlorides.log'", 
+      xlab = "Nível de 'quality'", 
+      ylab = "Nível de 'chlorides.log'", geom = 'boxplot')
+
+by (wineQuality$chlorides.log, wineQuality$quality, summary)
+```
+A variável "chlorides.log" não apresenta diferença substancial entre as categorias de qualidade de vinho.
+
+
+```{r echo=FALSE, message=FALSE,warning=FALSE}
+qplot(data = wineQuality, x = quality, y = free.sulfur.dioxide.log,
+      main = "Disperção 'quality' x 'free.sulfur.dioxide.log'", 
+      xlab = "Nível de 'quality'", 
+      ylab = "Nível de 'free.sulfur.dioxide.log'")
+
+qplot(data = wineQuality, x = quality, y = free.sulfur.dioxide.log, 
+      main = "Boxplot 'quality' x 'free.sulfur.dioxide.log'", 
+      xlab = "Nível de 'quality'", 
+      ylab = "Nível de 'free.sulfur.dioxide.log'", geom = 'boxplot')
+
+by (wineQuality$free.sulfur.dioxide.log, wineQuality$quality, summary)
+```
+Os valores mínimos e máximos da variável "free.sulfur.dioxide.log" variam nas classes de qualidade do vinho. Contudo, não é possível identificar valores exclusivos para cada faixa de qualidade. Praticamente nenhuma relação entre as duas variáveis.
+
+
+```{r echo=FALSE, message=FALSE,warning=FALSE}
+qplot(data = wineQuality, x = quality, y = total.sulfur.dioxide.log,
+      main = "Disperção 'quality' x 'total.sulfur.dioxide.log'", 
+      xlab = "Nível de 'quality'", 
+      ylab = "Nível de 'total.sulfur.dioxide.log'")
+
+qplot(data = wineQuality, x = quality, y = total.sulfur.dioxide.log, 
+      main = "Boxplot 'quality' x 'total.sulfur.dioxide.log'", 
+      xlab = "Nível de 'quality'", 
+      ylab = "Nível de 'total.sulfur.dioxide.log'", geom = 'boxplot')
+
+by (wineQuality$total.sulfur.dioxide.log, wineQuality$quality, summary)
+```
+Da mesma percepção do anterior, a variável "total.sulfur.dioxide.log" não permite uma diferenciação clara dentre as faixas de qualidade de vinho. Praticamente nenhuma relação entre as duas variáveis.
+
+
+```{r echo=FALSE, message=FALSE,warning=FALSE}
+qplot(data = wineQuality, x = quality, y = sulphates.log,
+      main = "Disperção 'quality' x 'sulphates.log'", 
+      xlab = "Nível de 'quality'", 
+      ylab = "Nível de 'sulphates.log'")
+
+qplot(data = wineQuality, x = quality, y = sulphates.log, 
+      main = "Boxplot 'quality' x 'sulphates.log'", 
+      xlab = "Nível de 'quality'", 
+      ylab = "Nível de 'sulphates.log'", geom = 'boxplot')
+
+by (wineQuality$sulphates.log, wineQuality$quality, summary)
+```
+Valores maiores da variável "sulphates.log" indicam relação com as melhores qualidades de vinho.
+
+
+
+
+
+# Análise Bivariada
+
+### Discuta sobre alguns dos relacionamentos observados nesta parte da investigação. Como os atributos de interesse variaram no conjunto de dados?
+Dentre as 12 variáveis analisadas, foram encontradas algumas correlações medianas (menor que 0.7) e apenas duas mais fortes (0.71 e 0.78). A principal variável de interesse é "quality", cujo resultado pode ser influenciado pelas demais variáveis.
+
+- A maior correlação com "quality" foi de 0.48 da variável "alcohol". Todas as demais ficaram igual ou menor que 0.3.
+- "free.sulfur.dioxide.log" e "total.sulfur.dioxide.log" apresentaram correlação de 0.78.
+- "ph" e "fixed.acidity.log" apresentaram correlação negativa de 0.71
+- Ambas as variáveis "citric.acid" e "density" apresentaram corrlelação de 0.67 com "fixed.acidity.log".
+- Inicialmente acreditava-se que o "pH" seria um forte elemento indutor da qualidade do vinho, e a análise inicial mostrou que não. O "pH" e "quality" apresentaram um correlação de apenas -0.06, ou seja, praticamente zero.
+
+
+### Você observou algum relacionamento interessante entre os outros atributos (os que não são de interesse)?
+Sim. Em dois casos.
+- A boa correlação entre as duas variáveis "sulfur.dioxide", com 0.78, já era previsível tendo em vista, pelo nome, terem a mesma origem.
+- Um segundo caso foi a relação da variável "fixed.acidity.log", com os resultados de 0.67, 0.67 e -0.71, em relação as variáveis "citric.acid", "density" e "pH", respectivamente.
+
+
+### Qual foi o relacionamento mais forte encontrado?
+Foi de 0.78 entre "free.sulfur.dioxide.log" e "total.sulfur.dioxide.log"
+
+
+
+# Seção de Gráficos Multivariados
+
+```{r echo=FALSE, Multivariate_Plots, fig.height=10, fig.width=10}
+qplot(x = fixed.acidity.log, y = density, data = wineQuality, colour = quality, 
+      main = "Dispersão: 'fixed.acidity.log' x 'density' x 'quality'", 
+      xlab = "Nível de 'fixed.acidity.log'", 
+      ylab = "Nível de 'density'")
+```
+No gráfico acima nos eixos x e y as variáveis "fixed.acidity.log" e "density", cuja correlação é de 0.67. É possivel observar a tendência positiva da disposição dos pontos. A variável "quality" foi inserida por meio da cor dos pontos.
+
+```{r echo=FALSE, fig.height=10, fig.width=10}
+qplot(x = fixed.acidity.log, y = density, data = wineQuality, colour = citric.acid, 
+      main = "Dispersão: 'fixed.acidity.log' x 'density' x 'citric.acid'", 
+      xlab = "Nível de 'fixed.acidity.log'", 
+      ylab = "Nível de 'density'")
+```
+O gráfico acima apresenta a relação positiva entre "fixed.acidity.log" e "density", cuja correlação entre as mesmas é de 0.67. A váriavel "citric.acid" aparece destacando o conjunto, onde seu valores maiores (pontos azuis claros) estão em consonância com os valores maiores das outras duas variáveis (quadrante direito superior).
+
+
+```{r echo=FALSE, fig.height=10, fig.width=10}
+
+qplot(x = quality, y = alcohol, data = wineQuality, colour = volatile.acidity.log, 
+      main = "Dispersão: 'quality' x 'alcohol' x 'volatile.acidity.log'", 
+      xlab = "Nível de 'quality'", 
+      ylab = "Nível de 'alcohol'")
+
+```
+Observa-se no gráfico acima a relação positiva entre qualidade do vinho e o alcool. Observa-se ainda que a variável "volatile.acidity.log" diminui a medida que a qualidade do vinho aumenta.
+
+
+```{r echo=FALSE, fig.height=10, fig.width=10}
+
+qplot(x = quality, y = volatile.acidity.log, data = wineQuality, colour = citric.acid, 
+      main = "Dispersão: 'quality' x 'volatile.acidity.log' x 'citric.acid'", 
+      xlab = "Nível de 'quality'", 
+      ylab = "Nível de 'volatile.acidity.log'")
+
+```
+Valores maiores de "volatile.acidity.log" estão presentes em vinhos de menor qualidade, juntamente com o acído cítrico.
+
+
+
+# Análise Multivariada
+
+### Discuta sobre os relacionamentos observados nesta parte da investigação. Quais atributos que fortaleceram os demais na observação das variáveis de interesse?
+A pouca correlação entre a maioria das variáveis é um indicativo da baixa relação entre as mesmas desse conjunto. Não se identificou relações muito relevantes entre as variáveis.
+
+As variáveis "fixed.acidity.log", "density", "citric.acid" possuem uma boa relação entre si, de forma a se identificar uma "tendência" na dispersão dos pontos. Contudo, não demonstram a mesma relação com a qualidade do vinho. 
+
+### Interações surpreendentes e/ou interessantes foram encontradas entre os atributos?
+Não foram encontrados. Na análise dos gráficos com três variáveis, não é possível afirmar que há "interações surpreendentes". A baixa relação entre as variáveis não permite isso.
+
+### OPCIONAL: Modelos foram criados usando este conjunto de dados? Discuta sobre os pontos fortes e as limitações do seu modelo.
+Não foram criados modelos neste projeto.
+------
+
+# Gráficos Finais e Sumário
+
+### Primeiro Gráfico
+```{r echo=FALSE, Plot_One, fig.height=7, fig.width=7}
+barplot(counts, main="Distribuição da Qualidade dos Vinhos", 
+  	xlab="Níveis de Qualidade",
+  	ylab = "Quantidade de vinhos (unidades)")
+```
+
+### Descrição do Primeiro Gráfico
+Dos 10 níveis de qualidade de classificação dos vinhos, o data set apresenta somente vinhos com notas entre 3 e 8. A maior parte dos vinhos receberam notas 5 e 6.
+
+### Segundo Gráfico
+```{r echo=FALSE, Plot_Two, fig.height=7, fig.width=7}
+qplot(data = wineQuality, x = quality, y = alcohol, geom = 'boxplot', main = "Níveis de Qualidade x Teor de Álcool", xlab = "Níveis de Qualidade", ylab = "Teor de Álcool")
+```
+
+### Descrição do Segundo Gráfico
+Vinhos com maiores notas no quesito qualidade indicam maiores níveis de alcool. Contudo, pelo "empareamento" dos boxplots, não é possível afirmar que o teor de álcool seja uma variável discriminante para os níveis de qualidade dos vinhos.
+
+### Terceiro Gráfico
+```{r echo=FALSE, Plot_Three, fig.height=7, fig.width=7}
+qplot(data = wineQuality, x = quality, y = volatile.acidity.log, geom = 'boxplot', main = "Níveis de Qualidade x Acidez Volátil", xlab = "Níveis de Qualidade", ylab = "Nível de Acidez Volátil")
+```
+
+### Descrição do Terceiro Gráfico
+
+O gráfico apresenta redução da mediana do nível de acidez volátil a medida que a qualidade do vinho aumenta. Contudo, pelo "empareamento" dos boxplots, não é possível afirmar que o nível de acidez seja uma variável discriminante para os níveis de qualidade dos vinhos.
+
+------
+
+# Reflexão
+É sabido que dentre as muitas centenas de tipos de vinhos, disponíveis nas prateleiras das lojas, há vinhos dos mais diversos tipos, com qualidades diferentes e preços diferentes. Também é sabido que a qualidade de um vinho é determinada por fatores conhecidos e manipulados pelos produtos, como o tipo da terra, o tipo da uva, índices de acidez etc.
+
+No data set analisado, com 11 variáveis de propriedades químicas do vinho, nesta etapa de análise, verificou-se que há pouca relação entre as variáveis. Não foram encontradas evidências iniciais que possibilitem afirmar que há elementos discriminantes para os níveis de qualidade do vinho que propiciem a formulação de um modelo classificador numa etapa futura. Essa percepção é decorrente das baixas correlações encontradas, ou ainda da pouca diferença apresentada nos gráficos de boxplot e nos de disperção.
+
